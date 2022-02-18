@@ -8,7 +8,7 @@ import { ApiserviceService } from '../services/apiservice.service';
 })
 export class HomePage {
   cbList=[];
-
+  totalSelected = 0;
   constructor(
     private apiService: ApiserviceService
   ) {}
@@ -31,5 +31,17 @@ export class HomePage {
       });
     });
 
+  }
+
+  onChange(i){
+    if(this.cbList[i].selected){
+      this.cbList[i].selected=false;
+      this.totalSelected = this.totalSelected - parseInt(this.cbList[i].itemKenaan);
+    }else{
+      this.cbList[i].selected=true;
+      this.totalSelected = this.totalSelected + parseInt(this.cbList[i].itemKenaan);
+    }
+
+    console.log(this.cbList);
   }
 }
