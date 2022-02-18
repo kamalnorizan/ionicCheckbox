@@ -7,6 +7,7 @@ import { ApiserviceService } from '../services/apiservice.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  cbList=[];
 
   constructor(
     private apiService: ApiserviceService
@@ -20,7 +21,14 @@ export class HomePage {
     };
 
     this.apiService.post('semakekspressAPI.php',jsonData).subscribe((res: any)=>{
-      console.log(res);
+      res.forEach(value => {
+        this.cbList.push({
+          itemId: value.item_id,
+          itemKet: value.item_ket,
+          itemKenaan: value.item_kenaan,
+          selected: false,
+        });
+      });
     });
 
   }
