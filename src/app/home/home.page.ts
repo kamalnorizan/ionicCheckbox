@@ -8,10 +8,15 @@ import { ApiserviceService } from '../services/apiservice.service';
 })
 export class HomePage {
   cbList=[];
+  selectedList=[];
   totalSelected = 0;
   constructor(
     private apiService: ApiserviceService
   ) {}
+
+  ngOnInit(){
+    this.senaraiYuran();
+  }
 
   senaraiYuran(){
     const jsonData = {
@@ -21,9 +26,10 @@ export class HomePage {
     };
 
     this.apiService.post('semakekspressAPI.php',jsonData).subscribe((res: any)=>{
+      console.log(res);
       res.forEach(value => {
         this.cbList.push({
-          itemId: value.item_id,
+          itemKenaanId: value.kenaan_id,
           itemKet: value.item_ket,
           itemKenaan: value.item_kenaan,
           selected: false,
@@ -34,6 +40,7 @@ export class HomePage {
   }
 
   onChange(i){
+
     if(this.cbList[i].selected){
       this.cbList[i].selected=false;
       this.totalSelected = this.totalSelected - parseInt(this.cbList[i].itemKenaan);
@@ -42,6 +49,28 @@ export class HomePage {
       this.totalSelected = this.totalSelected + parseInt(this.cbList[i].itemKenaan);
     }
 
+
     console.log(this.cbList);
+  }
+
+  bayaran(){
+    this.selectedList = [];
+    this.cbList.forEach(value=>{
+      if(value.selected){
+        this.selectedList.push({
+          itemKenaanId: value.itemKenaanId,
+          itemKet: value.itemKet,
+          itemKenaan: value.itemKenaan
+        });
+      }
+    });
+
+    const dataJson = {
+      selectedList: this.selectedList,
+      total: this.totalSelected
+    };
+
+    console.log(this.selectedList);
+
   }
 }
